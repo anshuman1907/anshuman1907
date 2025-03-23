@@ -1,3 +1,6 @@
+
+![image](https://github.com/user-attachments/assets/ba463acd-9a5e-40df-97d1-cd6f26b8164a)
+
 - 👋 Hi, I’m @anshuman verma
 - 👀 I’m interested in ...
 - 🌱 I’m currently learning ...
