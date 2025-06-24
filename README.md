@@ -3,12 +3,10 @@
 
 
 - 👋 Hi, I’m @anshuman verma
-- 👀 I’m interested in ..
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
+- 👀 I’m interested in new technologies
+- 🌱 I’m currently learning Dsa
+- 📫 How to reach me anshumanv1907@gmail.com
+
 
 <!---
 anshuman1907/anshuman1907 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
