@@ -1,5 +1,6 @@
 
-![image](https://github.com/user-attachments/assets/ba463acd-9a5e-40df-97d1-cd6f26b8164a)
+![image](https://github.com/user-attachments/assets/12e0bd2b-6139-4160-a077-dd1a6814ada3)
+
 
 - 👋 Hi, I’m @anshuman verma
 - 👀 I’m interested in ..
