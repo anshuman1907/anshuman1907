@@ -5,34 +5,32 @@ import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 const projects = [
   {
-    title: "Solid Starters",
-    category: "Low-Code Platform",
-    tools: "Angular, Next.js, NestJS, MongoDB",
-    image: "/images/Solidx.png",
+    title: "CallHQ",
+    category: "Voice AI Calling Platform",
+    tools: "Voice AI, Calling Automation, CRM Integrations",
+    image: "/images/callhq.png",
+    link: "https://callhq.ai",
   },
   {
-    title: "Radix",
-    category: "E-Commerce",
-    tools: "Angular, Next.js, NestJS, CMS",
-    image: "/images/radix.png",
+    title: "Whatsapp Automation",
+    category: "WABA Application",
+    tools: "WhatsApp Business API, Workflow Automation, Notifications",
+    image: "/images/whatsapp.png",
+    link: "https://whatsapp.callhq.ai",
   },
   {
-    title: "Bond Cancellation",
-    category: "Import-Export Automation",
-    tools: "Angular, Next.js, NestJS, Workflows",
-    image: "/images/bond.png",
+    title: "Broki",
+    category: "Real Estate Platform for FnB Industry",
+    tools: "Property Discovery, Lead Management, Marketplace Workflows",
+    image: "/images/broki.png",
+    link: "https://broki.in",
   },
   {
-    title: "Sapphire",
-    category: "CRM Platform",
-    tools: "AngularJS, NestJS, PostgreSQL",
-    image: "/images/sapphire.png",
-  },
-  {
-    title: "Mpro",
-    category: "Insurance Platform",
-    tools: "React.js, Node.js, Microservices",
-    image: "/images/Maxlife.png",
+    title: "Orrdr.com",
+    category: "Ecommerce Platform and Mobile App",
+    tools: "Ecommerce, Mobile Experience, Order Management",
+    image: "/images/orrdr.png",
+    link: "https://orrdr.com",
   },
 ];
 
@@ -115,7 +113,11 @@ const Work = () => {
                       </div>
                     </div>
                     <div className="carousel-image-wrapper">
-                      <WorkImage image={project.image} alt={project.title} />
+                      <WorkImage
+                        image={project.image}
+                        alt={project.title}
+                        link={project.link}
+                      />
                     </div>
                   </div>
                 </div>
