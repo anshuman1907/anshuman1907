@@ -1,4 +1,4 @@
-declare module "gsap-trial/SplitText" {
+declare module "gsap/SplitText" {
   export interface SplitTextVars {
     type?: string;
     linesClass?: string;
