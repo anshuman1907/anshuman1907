@@ -5,32 +5,32 @@ import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 const projects = [
   {
-    title: "CallHQ",
-    category: "Voice AI Calling Platform",
-    tools: "Voice AI, Calling Automation, CRM Integrations",
+    title: "Ornaz Appointment Booking",
+    category: "Next.js Jewellery Experience",
+    tools: "Next.js, HTML, CSS, JavaScript",
     image: "/images/callhq.png",
-    link: "https://callhq.ai",
+    link: "https://ornaz.com/try-at-home",
   },
   {
-    title: "Whatsapp Automation",
-    category: "WABA Application",
-    tools: "WhatsApp Business API, Workflow Automation, Notifications",
+    title: "Travel Explorer",
+    category: "Next.js Travel Website",
+    tools: "Next.js, Responsive UI, Destination Filtering",
     image: "/images/whatsapp.png",
-    link: "https://whatsapp.callhq.ai",
+    link: "#",
   },
   {
-    title: "Broki",
-    category: "Real Estate Platform for FnB Industry",
-    tools: "Property Discovery, Lead Management, Marketplace Workflows",
+    title: "Portfolio Website",
+    category: "Personal Developer Showcase",
+    tools: "React, Next.js, TailwindCSS",
     image: "/images/broki.png",
-    link: "https://broki.in",
+    link: "#",
   },
   {
-    title: "Orrdr.com",
-    category: "Ecommerce Platform and Mobile App",
-    tools: "Ecommerce, Mobile Experience, Order Management",
+    title: "Performance Optimization",
+    category: "Fast Front-End Workflows",
+    tools: "Lighthouse, Load Time Optimizations, Cross-Browser Support",
     image: "/images/orrdr.png",
-    link: "https://orrdr.com",
+    link: "#",
   },
 ];
 
