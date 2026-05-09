@@ -3,33 +3,35 @@ import "./styles/Work.css";
 import WorkImage from "./WorkImage";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
+const basePath = import.meta.env.BASE_URL || "./";
+
 const projects = [
   {
     title: "Ornaz Appointment Booking",
     category: "Next.js Jewellery Experience",
     tools: "Next.js, HTML, CSS, JavaScript",
-    image: "/images/callhq.png",
+    image: `${basePath}images/callhq.png`,
     link: "https://ornaz.com/try-at-home",
   },
   {
     title: "Travel Explorer",
     category: "Next.js Travel Website",
     tools: "Next.js, Responsive UI, Destination Filtering",
-    image: "/images/whatsapp.png",
+    image: `${basePath}images/whatsapp.png`,
     link: "#",
   },
   {
     title: "Portfolio Website",
     category: "Personal Developer Showcase",
     tools: "React, Next.js, TailwindCSS",
-    image: "/images/broki.png",
+    image: `${basePath}images/broki.png`,
     link: "#",
   },
   {
     title: "Performance Optimization",
     category: "Fast Front-End Workflows",
     tools: "Lighthouse, Load Time Optimizations, Cross-Browser Support",
-    image: "/images/orrdr.png",
+    image: `${basePath}images/orrdr.png`,
     link: "#",
   },
 ];

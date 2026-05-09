@@ -19,6 +19,7 @@ const Scene = () => {
   const sceneRef = useRef(new THREE.Scene());
   const { setLoading, setIsLoading } = useLoading();
 
+  const basePath = import.meta.env.BASE_URL || "./";
   const [webglError, setWebglError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -193,7 +194,7 @@ const Scene = () => {
           {webglError ? (
             <div className="character-fallback">
               <img
-                src="/images/preview1.png"
+                src={`${basePath}images/preview1.png`}
                 alt="Homepage preview"
                 className="fallback-image"
               />

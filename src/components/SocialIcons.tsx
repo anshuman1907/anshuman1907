@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
 
 const SocialIcons = () => {
+  const basePath = import.meta.env.BASE_URL || "./";
   useEffect(() => {
     const social = document.getElementById("social") as HTMLElement;
 
@@ -32,7 +33,7 @@ const SocialIcons = () => {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        if (x < 40 && x > 10 && y < 40 && y > 5) {  
+        if (x < 40 && x > 10 && y < 40 && y > 5) {
           mouseX = x;
           mouseY = y;
         } else {
@@ -75,7 +76,7 @@ const SocialIcons = () => {
       </div>
       <a
         className="resume-button"
-        href="/Anshuman_verma___Next_Js_developer (1).pdf"
+        href={`${basePath}Anshuman_verma___Next_Js_developer (1).pdf`}
         target="_blank"
         rel="noreferrer"
       >
