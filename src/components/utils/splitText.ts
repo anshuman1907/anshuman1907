@@ -10,7 +10,19 @@ interface ParaElement extends HTMLElement {
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 
-export default function setSplitText() {
+let refreshListenerAttached = false;
+
+function attachSplitTextRefreshOnce() {
+  if (refreshListenerAttached) return;
+  refreshListenerAttached = true;
+  ScrollTrigger.addEventListener("refresh", () => {
+    if (window.innerWidth >= 900) {
+      applySplitText();
+    }
+  });
+}
+
+function applySplitText() {
   ScrollTrigger.config({ ignoreMobileResize: true });
   if (window.innerWidth < 900) return;
   const paras: NodeListOf<ParaElement> = document.querySelectorAll(".para");
@@ -75,6 +87,9 @@ export default function setSplitText() {
       }
     );
   });
+}
 
-  ScrollTrigger.addEventListener("refresh", () => setSplitText());
+export default function setSplitText() {
+  attachSplitTextRefreshOnce();
+  applySplitText();
 }
