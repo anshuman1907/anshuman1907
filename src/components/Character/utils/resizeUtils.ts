@@ -1,6 +1,9 @@
 import * as THREE from "three";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+import setSplitText from "../../utils/splitText";
 import { setCharTimeline, setAllTimeline } from "../../utils/GsapScroll";
+import { smoother } from "../../Navbar";
 
 export default function handleResize(
   renderer: THREE.WebGLRenderer,
@@ -15,12 +18,11 @@ export default function handleResize(
   renderer.setSize(width, height);
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  const workTrigger = ScrollTrigger.getById("work");
   ScrollTrigger.getAll().forEach((trigger) => {
-    if (trigger != workTrigger) {
-      trigger.kill();
-    }
+    trigger.kill();
   });
   setCharTimeline(character, camera);
   setAllTimeline();
+  setSplitText();
+  if (smoother) ScrollSmoother.refresh(true);
 }

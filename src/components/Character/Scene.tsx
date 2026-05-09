@@ -12,6 +12,7 @@ import {
 } from "./utils/mouseUtils";
 import setAnimations from "./utils/animationUtils";
 import { setProgress } from "../Loading";
+import { resumeSmoothScroll } from "../utils/resumeSmoothScroll";
 
 const Scene = () => {
   const canvasDiv = useRef<HTMLDivElement | null>(null);
@@ -19,6 +20,7 @@ const Scene = () => {
   const sceneRef = useRef(new THREE.Scene());
   const { setLoading, setIsLoading } = useLoading();
 
+  const basePath = import.meta.env.BASE_URL || "./";
   const [webglError, setWebglError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -43,12 +45,14 @@ const Scene = () => {
     } catch (error) {
       console.error("WebGL initialization failed:", error);
       setWebglError("WebGL not available in this browser or environment.");
+      resumeSmoothScroll();
       setIsLoading(false);
       return;
     }
 
     if (!renderer) {
       setWebglError("WebGL renderer could not be created.");
+      resumeSmoothScroll();
       setIsLoading(false);
       return;
     }
@@ -66,6 +70,7 @@ const Scene = () => {
     if (!renderer.getContext()) {
       console.error("WebGL context is unavailable on renderer.domElement");
       setWebglError("Unable to create a WebGL context.");
+      resumeSmoothScroll();
       setIsLoading(false);
       return;
     }
@@ -105,6 +110,7 @@ const Scene = () => {
       .catch((error) => {
         console.error("Character loading failed:", error);
         setWebglError("Character loading failed.");
+        resumeSmoothScroll();
         setIsLoading(false);
       });
 
@@ -193,7 +199,7 @@ const Scene = () => {
           {webglError ? (
             <div className="character-fallback">
               <img
-                src="/images/preview1.png"
+                src={`${basePath}images/preview1.png`}
                 alt="Homepage preview"
                 className="fallback-image"
               />

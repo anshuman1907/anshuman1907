@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 
@@ -14,15 +14,21 @@ const Loading = ({ percent }: { percent: number }) => {
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const completionStarted = useRef(false);
 
-  if (percent >= 100) {
-    setTimeout(() => {
+  useEffect(() => {
+    if (percent < 100 || completionStarted.current) return;
+    completionStarted.current = true;
+    let innerTimeout: number;
+    const outerTimeout = window.setTimeout(() => {
       setLoaded(true);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
+      innerTimeout = window.setTimeout(() => setIsLoaded(true), 1000);
     }, 600);
-  }
+    return () => {
+      window.clearTimeout(outerTimeout);
+      if (innerTimeout) window.clearTimeout(innerTimeout);
+    };
+  }, [percent]);
 
   useEffect(() => {
     import("./utils/initialFX").then((module) => {
@@ -50,7 +56,7 @@ const Loading = ({ percent }: { percent: number }) => {
   return (
     <>
       <div className="loading-header">
-        <a href="/#" className="loader-title" data-cursor="disable">
+        <a href="#" className="loader-title" data-cursor="disable">
           AM
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>

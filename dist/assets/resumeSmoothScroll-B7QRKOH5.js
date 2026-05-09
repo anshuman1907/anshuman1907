@@ -1,0 +1,1 @@
+import{n as e,s as t}from"./Navbar-DQApH95p.js";function n(){document.body.style.overflowY=`auto`;let n=document.getElementsByTagName(`main`)[0];n&&n.classList.add(`main-active`),e&&e.paused(!1),t.refresh()}export{n as t};
