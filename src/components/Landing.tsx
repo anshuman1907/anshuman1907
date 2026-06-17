@@ -28,7 +28,11 @@ const Landing = ({ children }: PropsWithChildren) => {
           </div>
         </div>
         <div className="scroll-down" onClick={() => {
-          const smoother = (window as any).smoother;
+          const smoother = (
+            window as typeof window & {
+              smoother?: { scrollTo: (target: string, smooth: boolean, position: string) => void };
+            }
+          ).smoother;
           if (smoother) smoother.scrollTo("#about", true, "top top");
         }}>
           <MdKeyboardArrowDown />

@@ -1,4 +1,11 @@
-import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
+import {
+  lazy,
+  PropsWithChildren,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -14,27 +21,84 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const TechStack = lazy(() => import("./TechStack"));
 
+const DeferredTechStack = () => {
+  const [shouldRender, setShouldRender] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (shouldRender) return;
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setShouldRender(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldRender(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "900px 0px" }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [shouldRender]);
+
+  return (
+    <div ref={sentinelRef} className="techstack-deferred">
+      {shouldRender && (
+        <Suspense fallback={null}>
+          <TechStack />
+        </Suspense>
+      )}
+    </div>
+  );
+};
+
 const MainContainer = ({ children }: PropsWithChildren) => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
     window.innerWidth > 1024
   );
 
   useEffect(() => {
-    const id = window.setTimeout(() => {
+    const id = window.requestAnimationFrame(() => {
       setAllTimeline();
       ScrollTrigger.refresh();
-    }, 0);
-    return () => window.clearTimeout(id);
+    });
+    return () => {
+      window.cancelAnimationFrame(id);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   useEffect(() => {
+    let resizeTimeout = 0;
+    let lastWidth = window.innerWidth;
+
     const resizeHandler = () => {
-      setSplitText();
-      setIsDesktopView(window.innerWidth > 1024);
+      window.clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(() => {
+        const width = window.innerWidth;
+        const widthChanged = Math.abs(width - lastWidth) > 8;
+        lastWidth = width;
+
+        setIsDesktopView(width > 1024);
+        if (widthChanged) {
+          setSplitText();
+          ScrollTrigger.refresh();
+        }
+      }, 150);
     };
+
     resizeHandler();
-    window.addEventListener("resize", resizeHandler);
+    window.addEventListener("resize", resizeHandler, { passive: true });
     return () => {
+      window.clearTimeout(resizeTimeout);
       window.removeEventListener("resize", resizeHandler);
     };
   }, []);
@@ -54,9 +118,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Career />
             <Work />
             {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
-                <TechStack />
-              </Suspense>
+              <DeferredTechStack />
             )}
             <Contact />
           </div>

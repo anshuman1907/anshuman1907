@@ -33,17 +33,47 @@
 .navbar-connect {
   position: absolute;
   display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 15px;
-  letter-spacing: 1px;
-  font-weight: 500;
+  min-width: 132px;
+  height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  border-radius: 999px;
+  background: rgba(10, 14, 23, 0.72);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  color: #eae5ec;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.4px;
+  font-weight: 700;
   opacity: 0;
   animation: navbarFadeIn 0.9s ease-out 0.3s forwards;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    background 0.25s ease;
+}
+.navbar-connect svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 .navbar-connect:hover {
-  color: #2dd4bf;
+  border-color: rgba(45, 212, 191, 0.85);
+  background: rgba(20, 184, 166, 0.16);
+  box-shadow:
+    0 16px 42px rgba(45, 212, 191, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 @keyframes navbarFadeIn {
@@ -57,9 +87,40 @@
   }
 }
 .navbar-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, rgba(94, 234, 212, 0.26), transparent 36%),
+    linear-gradient(225deg, rgba(244, 114, 182, 0.45), rgba(168, 85, 247, 0.36) 54%, rgba(251, 191, 36, 0.34));
+  background-size:
+    190% 190%,
+    220% 220%;
+  box-shadow:
+    0 0 26px rgba(168, 85, 247, 0.36),
+    0 0 46px rgba(45, 212, 191, 0.14);
+  color: #ffffff;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.2px;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.32);
+  animation: navbarTitlePulse 5s ease-in-out infinite;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.navbar-title:hover {
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 0 28px rgba(94, 234, 212, 0.42),
+    0 0 56px rgba(244, 114, 182, 0.3);
 }
 @media only screen and (min-width: 500px) {
   .header {
@@ -74,12 +135,14 @@
     color: #eae5ec;
   }
   .navbar-title {
-    font-size: 16px;
+    width: 58px;
+    height: 58px;
+    font-size: 19px;
   }
 }
 @media only screen and (min-width: 900px) {
   .navbar-connect {
-    display: block;
+    display: inline-flex;
   }
 }
 @media only screen and (min-width: 1200px) {
@@ -91,9 +154,34 @@
     font-size: 16px;
   }
   .navbar-connect {
-    font-size: 16px;
+    min-width: 146px;
+    height: 44px;
+    font-size: 15px;
   }
   .navbar-title {
-    font-size: 18px;
+    width: 62px;
+    height: 62px;
+    font-size: 20px;
+  }
+}
+
+@keyframes navbarTitlePulse {
+  0% {
+    background-position: 0% 50%, 0% 50%;
+    box-shadow:
+      0 0 24px rgba(168, 85, 247, 0.34),
+      0 0 42px rgba(45, 212, 191, 0.12);
+  }
+  50% {
+    background-position: 100% 50%, 100% 50%;
+    box-shadow:
+      0 0 30px rgba(94, 234, 212, 0.38),
+      0 0 54px rgba(251, 191, 36, 0.2);
+  }
+  100% {
+    background-position: 0% 50%, 0% 50%;
+    box-shadow:
+      0 0 24px rgba(168, 85, 247, 0.34),
+      0 0 42px rgba(45, 212, 191, 0.12);
   }
 }

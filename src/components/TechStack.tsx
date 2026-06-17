@@ -25,10 +25,11 @@ const imageUrls = [
 ];
 const textures = imageUrls.map((url) => textureLoader.load(url));
 
-const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
+const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
 
-const spheres = [...Array(30)].map(() => ({
+const spheres = [...Array(24)].map((_, index) => ({
   scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
+  materialIndex: index % imageUrls.length,
 }));
 
 type SphereProps = {
@@ -49,10 +50,10 @@ function SphereGeo({
   const api = useRef<RapierRigidBody | null>(null);
 
   useFrame((_state, delta) => {
-    if (!isActive) return;
+    if (!isActive || !api.current) return;
     delta = Math.min(0.1, delta);
     const impulse = vec
-      .copy(api.current!.translation())
+      .copy(api.current.translation())
       .normalize()
       .multiply(
         new THREE.Vector3(
@@ -99,11 +100,12 @@ type PointerProps = {
 
 function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
   const ref = useRef<RapierRigidBody>(null);
+  const target = useMemo(() => new THREE.Vector3(), []);
 
   useFrame(({ pointer, viewport }) => {
     if (!isActive) return;
     const targetVec = vec.lerp(
-      new THREE.Vector3(
+      target.set(
         (pointer.x * viewport.width) / 2,
         (pointer.y * viewport.height) / 2,
         0
@@ -140,34 +142,26 @@ const isWebGLAvailable = () => {
 };
 
 const TechStack = () => {
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [webglSupported, setWebglSupported] = useState(true);
 
   useEffect(() => {
     setWebglSupported(isWebGLAvailable());
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
-    };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
-    });
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    const root = rootRef.current;
+    if (!root || !("IntersectionObserver" in window)) {
+      setIsActive(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsActive(entry.isIntersecting),
+      { rootMargin: "250px 0px" }
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
   }, []);
   const materials = useMemo(() => {
     return textures.map(
@@ -184,8 +178,14 @@ const TechStack = () => {
     );
   }, []);
 
+  useEffect(() => {
+    return () => {
+      materials.forEach((material) => material.dispose());
+    };
+  }, [materials]);
+
   return (
-    <div className="techstack">
+    <div className="techstack" ref={rootRef}>
       <h2> My Techstack</h2>
 
       {!webglSupported ? (
@@ -197,6 +197,8 @@ const TechStack = () => {
         <Canvas
           shadows
           gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
+          dpr={[1, 1.5]}
+          frameloop={isActive ? "always" : "demand"}
           camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
           onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
           className="tech-canvas"
@@ -216,8 +218,8 @@ const TechStack = () => {
             {spheres.map((props, i) => (
               <SphereGeo
                 key={i}
-                {...props}
-                material={materials[Math.floor(Math.random() * materials.length)]}
+                scale={props.scale}
+                material={materials[props.materialIndex]}
                 isActive={isActive}
               />
             ))}

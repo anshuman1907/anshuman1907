@@ -3,10 +3,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { FaLinkedinIn } from "react-icons/fa6";
 import "./styles/Navbar.css";
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother: ScrollSmoother;
+export let smoother: ScrollSmoother | undefined;
+
+const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/anshuman1907/";
+const NAUKRI_PROFILE_URL = "https://www.naukri.com/mnjuser/profile";
 
 const Navbar = () => {
   useEffect(() => {
@@ -20,43 +24,74 @@ const Navbar = () => {
       ignoreMobileResize: true,
     });
 
+    (window as typeof window & { smoother?: ScrollSmoother }).smoother = smoother;
     smoother.scrollTop(0);
     smoother.paused(true);
 
-    let links = document.querySelectorAll(".header ul a");
+    const links = document.querySelectorAll(".header ul a");
+    const cleanups: Array<() => void> = [];
     links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
+      const element = elem as HTMLAnchorElement;
+      const onClick = (e: MouseEvent) => {
         if (window.innerWidth > 1024) {
           e.preventDefault();
           const section = element.getAttribute("data-href");
           if (section) {
             const target = document.querySelector(section);
             if (target) {
-              smoother.scrollTo(target, true, "top top");
+              smoother?.scrollTo(target, true, "top top");
             }
           }
         }
+      };
+      element.addEventListener("click", onClick);
+      cleanups.push(() => element.removeEventListener("click", onClick));
+    });
+
+    let resizeFrame = 0;
+    const onResize = () => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => {
+        ScrollSmoother.refresh(true);
       });
+    };
+
+    window.addEventListener("resize", onResize, { passive: true });
+    cleanups.push(() => {
+      cancelAnimationFrame(resizeFrame);
+      window.removeEventListener("resize", onResize);
     });
-    window.addEventListener("resize", () => {
-      ScrollSmoother.refresh(true);
-    });
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+      smoother?.kill();
+      smoother = undefined;
+      delete (window as typeof window & { smoother?: ScrollSmoother }).smoother;
+    };
   }, []);
   return (
     <>
       <div className="header">
-        <a href="#" className="navbar-title" data-cursor="disable">
+        <a
+          href={NAUKRI_PROFILE_URL}
+          className="navbar-title"
+          data-cursor="disable"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Open Naukri profile"
+        >
           AV
         </a>
         <a
-          href="https://www.linkedin.com/in/anshuman-verma-423309406/"
+          href={LINKEDIN_PROFILE_URL}
           className="navbar-connect"
           data-cursor="disable"
           target="_blank"
           rel="noreferrer"
+          aria-label="Open LinkedIn profile"
         >
-          linkedin.com/in/anshuman-verma-423309406
+          <FaLinkedinIn aria-hidden="true" />
+          <span>LinkedIn</span>
         </a>
         <ul>
           <li>

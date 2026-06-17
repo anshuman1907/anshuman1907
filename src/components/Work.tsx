@@ -7,11 +7,53 @@ const basePath = import.meta.env.BASE_URL || "./";
 
 const projects = [
   {
-    title: "Ornaz Appointment Booking",
-    category: "Next.js Jewellery Experience",
-    tools: "Next.js, HTML, CSS, JavaScript",
+    title: "Lead Assistant — GenAI Multi-Agent Platform",
+    category: "Enterprise GenAI Platform",
+    tools: "LangChain, LangGraph, Azure OpenAI, Python, Docker",
+    image: `${basePath}images/preview1.png`,
+    link: "#",
+  },
+  {
+    title: "Ornaz E-Commerce Platform",
+    category: "Production E-commerce",
+    tools: "Django, FastAPI, Node.js, PostgreSQL, MongoDB",
     image: `${basePath}images/callhq.png`,
+    link: "#",
+  },
+  {
+    title: "Try-at-Home Appointment Platform",
+    category: "Appointment Booking",
+    tools: "Next.js, REST APIs, Scheduling",
+    image: `${basePath}images/whatsapp.png`,
     link: "https://ornaz.com/try-at-home",
+  },
+  {
+    title: "Real-Time AR Jewellery Try-On",
+    category: "AR / Computer Vision",
+    tools: "MediaPipe, WebGL, Three.js",
+    image: `${basePath}images/sapphire.png`,
+    link: "#",
+  },
+  {
+    title: "CRM & Operations Dashboard",
+    category: "Internal Tools",
+    tools: "React, Redux, REST APIs, Redis",
+    image: `${basePath}images/placeholder.webp`,
+    link: "#",
+  },
+  {
+    title: "Diamond Compare Application",
+    category: "Product Tooling",
+    tools: "React, Performance Optimizations",
+    image: `${basePath}images/broki.png`,
+    link: "#",
+  },
+  {
+    title: "BareBrilliant Platform & Lead Funnels",
+    category: "Marketing & Lead Gen",
+    tools: "Next.js, Landing Pages, Analytics",
+    image: `${basePath}images/express.webp`,
+    link: "#",
   },
   {
     title: "Travel Explorer",
@@ -66,7 +108,7 @@ const Work = () => {
     <div className="work-section" id="work">
       <div className="work-container section-container">
         <h2>
-          My <span>Work</span>
+          <span>Projects</span>
         </h2>
 
         <div className="carousel-wrapper">
@@ -98,30 +140,42 @@ const Work = () => {
             >
               {projects.map((project, index) => (
                 <div className="carousel-slide" key={index}>
-                  <div className="carousel-content">
-                    <div className="carousel-info">
-                      <div className="carousel-number">
-                        <h3>0{index + 1}</h3>
-                      </div>
-                      <div className="carousel-details">
-                        <h4>{project.title}</h4>
-                        <p className="carousel-category">
-                          {project.category}
-                        </p>
-                        <div className="carousel-tools">
-                          <span className="tools-label">Tools & Features</span>
-                          <p>{project.tools}</p>
+                  {(() => {
+                    const distance = Math.abs(index - currentIndex);
+                    const shouldLoadImage =
+                      distance <= 1 || distance === projects.length - 1;
+
+                    return (
+                      <div className="carousel-content">
+                        <div className="carousel-info">
+                          <div className="carousel-number">
+                            <h3>0{index + 1}</h3>
+                          </div>
+                          <div className="carousel-details">
+                            <h4>{project.title}</h4>
+                            <p className="carousel-category">
+                              {project.category}
+                            </p>
+                            <div className="carousel-tools">
+                              <span className="tools-label">
+                                Tools & Features
+                              </span>
+                              <p>{project.tools}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="carousel-image-wrapper">
+                          <WorkImage
+                            image={project.image}
+                            alt={project.title}
+                            link={project.link}
+                            shouldLoad={shouldLoadImage}
+                            priority={index === currentIndex}
+                          />
                         </div>
                       </div>
-                    </div>
-                    <div className="carousel-image-wrapper">
-                      <WorkImage
-                        image={project.image}
-                        alt={project.title}
-                        link={project.link}
-                      />
-                    </div>
-                  </div>
+                    );
+                  })()}
                 </div>
               ))}
             </div>

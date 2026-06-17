@@ -1,0 +1,1 @@
+import{l as e,n as t}from"./Navbar-BCMifblo.js";function n(){document.body.style.overflowY=`auto`;let n=document.getElementsByTagName(`main`)[0];n&&n.classList.add(`main-active`),t&&t.paused(!1),e.refresh()}export{n as t};

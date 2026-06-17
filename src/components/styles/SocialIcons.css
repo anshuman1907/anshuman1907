@@ -35,12 +35,13 @@
   --siLeft: 50%;
   --siTop: 50%;
   position: absolute;
-  left: var(--siLeft, 50%);
-  top: var(--siTop, 50%);
-  transform: translate(-50%, -50%);
+  left: 0;
+  top: 0;
+  transform: translate3d(var(--siLeft, 25px), var(--siTop, 25px), 0)
+    translate(-50%, -50%);
   display: flex;
   font-size: 23px;
-  will-change: left, top;
+  will-change: transform;
   transition: transform 0.3s ease-out;
 }
 .resume-button {

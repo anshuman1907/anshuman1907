@@ -1,4 +1,5 @@
-import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { FaGithub } from "react-icons/fa6";
+import { SiLeetcode } from "react-icons/si";
 import "./styles/SocialIcons.css";
 import { TbNotes } from "react-icons/tb";
 import { useEffect } from "react";
@@ -8,16 +9,23 @@ const SocialIcons = () => {
   const basePath = import.meta.env.BASE_URL || "./";
   useEffect(() => {
     const social = document.getElementById("social") as HTMLElement;
+    if (!social || window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
 
+    const cleanups: Array<() => void> = [];
     social.querySelectorAll("span").forEach((item) => {
       const elem = item as HTMLElement;
       const link = elem.querySelector("a") as HTMLElement;
+      if (!link) return;
 
-      const rect = elem.getBoundingClientRect();
+      let rect = elem.getBoundingClientRect();
       let mouseX = rect.width / 2;
       let mouseY = rect.height / 2;
-      let currentX = 0;
-      let currentY = 0;
+      let currentX = mouseX;
+      let currentY = mouseY;
+      let frameId = 0;
+      let active = false;
 
       const updatePosition = () => {
         currentX += (mouseX - currentX) * 0.1;
@@ -26,7 +34,26 @@ const SocialIcons = () => {
         link.style.setProperty("--siLeft", `${currentX}px`);
         link.style.setProperty("--siTop", `${currentY}px`);
 
-        requestAnimationFrame(updatePosition);
+        const isSettled =
+          Math.abs(mouseX - currentX) < 0.1 && Math.abs(mouseY - currentY) < 0.1;
+
+        if (active || !isSettled) {
+          frameId = requestAnimationFrame(updatePosition);
+        } else {
+          frameId = 0;
+        }
+      };
+
+      const startAnimation = () => {
+        if (!frameId) {
+          frameId = requestAnimationFrame(updatePosition);
+        }
+      };
+
+      const onMouseEnter = () => {
+        active = true;
+        rect = elem.getBoundingClientRect();
+        startAnimation();
       };
 
       const onMouseMove = (e: MouseEvent) => {
@@ -42,14 +69,26 @@ const SocialIcons = () => {
         }
       };
 
-      document.addEventListener("mousemove", onMouseMove);
-
-      updatePosition();
-
-      return () => {
-        elem.removeEventListener("mousemove", onMouseMove);
+      const onMouseLeave = () => {
+        active = false;
+        mouseX = rect.width / 2;
+        mouseY = rect.height / 2;
+        startAnimation();
       };
+
+      elem.addEventListener("mouseenter", onMouseEnter);
+      elem.addEventListener("mousemove", onMouseMove);
+      elem.addEventListener("mouseleave", onMouseLeave);
+
+      cleanups.push(() => {
+        cancelAnimationFrame(frameId);
+        elem.removeEventListener("mouseenter", onMouseEnter);
+        elem.removeEventListener("mousemove", onMouseMove);
+        elem.removeEventListener("mouseleave", onMouseLeave);
+      });
     });
+
+    return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
 
   return (
@@ -70,13 +109,13 @@ const SocialIcons = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <FaLinkedinIn />
+            <SiLeetcode />
           </a>
         </span>
       </div>
       <a
         className="resume-button"
-        href={`${basePath}Anshuman_verma___Next_Js_developer (1).pdf`}
+        href={`${basePath}resume.html`}
         target="_blank"
         rel="noreferrer"
       >

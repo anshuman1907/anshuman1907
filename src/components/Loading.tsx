@@ -3,11 +3,32 @@ import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 
 import * as ReactFastMarquee from "react-fast-marquee";
-const ReactFastMarqueeAny = ReactFastMarquee as any;
-const Marquee =
-  ReactFastMarqueeAny.default?.default ||
-  ReactFastMarqueeAny.default ||
-  ReactFastMarqueeAny;
+import type { ElementType, PropsWithChildren } from "react";
+
+type MarqueeComponent = ElementType<PropsWithChildren>;
+type MarqueeModule = { default?: unknown };
+
+const isRenderableComponent = (value: unknown): value is MarqueeComponent => {
+  return (
+    typeof value === "function" ||
+    (typeof value === "object" && value !== null && "$$typeof" in value)
+  );
+};
+
+const ReactFastMarqueeModule = ReactFastMarquee as MarqueeModule;
+const directMarquee = ReactFastMarqueeModule.default;
+const nestedMarquee =
+  typeof directMarquee === "object" && directMarquee !== null
+    ? (directMarquee as MarqueeModule).default
+    : undefined;
+const FallbackMarquee = ({ children }: PropsWithChildren) => (
+  <div className="marquee-fallback">{children}</div>
+);
+const Marquee: MarqueeComponent = isRenderableComponent(directMarquee)
+  ? directMarquee
+  : isRenderableComponent(nestedMarquee)
+    ? nestedMarquee
+    : FallbackMarquee;
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
@@ -22,8 +43,8 @@ const Loading = ({ percent }: { percent: number }) => {
     let innerTimeout: number;
     const outerTimeout = window.setTimeout(() => {
       setLoaded(true);
-      innerTimeout = window.setTimeout(() => setIsLoaded(true), 1000);
-    }, 600);
+      innerTimeout = window.setTimeout(() => setIsLoaded(true), 220);
+    }, 120);
     return () => {
       window.clearTimeout(outerTimeout);
       if (innerTimeout) window.clearTimeout(innerTimeout);
@@ -31,18 +52,37 @@ const Loading = ({ percent }: { percent: number }) => {
   }, [percent]);
 
   useEffect(() => {
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
-        setClicked(true);
-        setTimeout(() => {
-          if (module.initialFX) {
-            module.initialFX();
-          }
-          setIsLoading(false);
-        }, 900);
-      }
-    });
-  }, [isLoaded]);
+    let cancelled = false;
+    import("./utils/initialFX")
+      .then((module) => {
+        if (isLoaded && !cancelled) {
+          setClicked(true);
+          setTimeout(() => {
+            try {
+              if (module.initialFX) {
+                module.initialFX();
+              }
+            } catch (err) {
+              console.error("initialFX threw:", err);
+            } finally {
+              setIsLoading(false);
+            }
+          }, 360);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to import initialFX:", err);
+        if (isLoaded && !cancelled) {
+          setClicked(true);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 360);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoaded, setIsLoading]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
@@ -56,8 +96,14 @@ const Loading = ({ percent }: { percent: number }) => {
   return (
     <>
       <div className="loading-header">
-        <a href="#" className="loader-title" data-cursor="disable">
-          AM
+        <a
+          href="https://www.linkedin.com/in/anshuman1907/"
+          className="loader-title"
+          data-cursor="disable"
+          target="_blank"
+          rel="noreferrer"
+        >
+          av
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>
           <div className="loaderGame-container">
@@ -86,7 +132,7 @@ const Loading = ({ percent }: { percent: number }) => {
             <div className="loading-container">
               <div className="loading-content">
                 <div className="loading-content-in">
-                  Loading <span>{percent}%</span>
+                  Loading <span>{Math.min(100, Math.round(percent))}%</span>
                 </div>
               </div>
               <div className="loading-box"></div>
@@ -102,45 +148,3 @@ const Loading = ({ percent }: { percent: number }) => {
 };
 
 export default Loading;
-
-export const setProgress = (setLoading: (value: number) => void) => {
-  let percent: number = 0;
-
-  let interval = setInterval(() => {
-    if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
-      percent = percent + rand;
-      setLoading(percent);
-    } else {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
-        setLoading(percent);
-        if (percent > 91) {
-          clearInterval(interval);
-        }
-      }, 2000);
-    }
-  }, 100);
-
-  function clear() {
-    clearInterval(interval);
-    setLoading(100);
-  }
-
-  function loaded() {
-    return new Promise<number>((resolve) => {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        if (percent < 100) {
-          percent++;
-          setLoading(percent);
-        } else {
-          resolve(percent);
-          clearInterval(interval);
-        }
-      }, 2);
-    });
-  }
-  return { loaded, percent, clear };
-};
