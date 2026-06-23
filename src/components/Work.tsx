@@ -7,13 +7,6 @@ const basePath = import.meta.env.BASE_URL || "./";
 
 const projects = [
   {
-    title: "Lead Assistant — GenAI Multi-Agent Platform",
-    category: "Enterprise GenAI Platform",
-    tools: "LangChain, LangGraph, Azure OpenAI, Python, Docker",
-    image: `${basePath}images/preview1.png`,
-    link: "#",
-  },
-  {
     title: "Ornaz E-Commerce Platform",
     category: "Production E-commerce",
     tools: "Django, FastAPI, Node.js, PostgreSQL, MongoDB",
@@ -21,38 +14,47 @@ const projects = [
     link: "#",
   },
   {
-    title: "Try-at-Home Appointment Platform",
-    category: "Appointment Booking",
-    tools: "Next.js, REST APIs, Scheduling",
-    image: `${basePath}images/whatsapp.png`,
-    link: "https://ornaz.com/try-at-home",
-  },
-  {
-    title: "Real-Time AR Jewellery Try-On",
-    category: "AR / Computer Vision",
-    tools: "MediaPipe, WebGL, Three.js",
-    image: `${basePath}images/sapphire.png`,
-    link: "#",
-  },
-  {
-    title: "CRM & Operations Dashboard",
-    category: "Internal Tools",
-    tools: "React, Redux, REST APIs, Redis",
-    image: `${basePath}images/placeholder.webp`,
+    title: "Lead Assistant — GenAI Multi-Agent Platform",
+    category: "Enterprise GenAI Platform",
+    tools: "LangChain, LangGraph, Azure OpenAI, Python, Docker",
+    image: `${basePath}images/preview1.png`,
     link: "#",
   },
   {
     title: "Diamond Compare Application",
     category: "Product Tooling",
     tools: "React, Performance Optimizations",
-    image: `${basePath}images/broki.png`,
+    image: `${basePath}images/diamond_compare.png`,
     link: "#",
   },
+
+  {
+    title: "Real-Time AR Jewellery Try-On",
+    category: "AR / Computer Vision",
+    tools: "MediaPipe, WebGL, Three.js",
+    image: `${basePath}images/realtime_tryon.png`,
+    link: "#",
+  },
+  {
+    title: "Try-at-Home Appointment Platform",
+    category: "Appointment Booking",
+    tools: "Next.js, REST APIs, Scheduling",
+    image: `${basePath}images/try_at_home_same_as_whatsapp.png`,
+    link: "https://ornaz.com/try-at-home",
+  },
+  {
+    title: "CRM & Operations Dashboard",
+    category: "Internal Tools",
+    tools: "React, Redux, REST APIs, Redis",
+    image: `${basePath}images/Crm and Dasboard.png`,
+    link: "#",
+  },
+
   {
     title: "BareBrilliant Platform & Lead Funnels",
     category: "Marketing & Lead Gen",
     tools: "Next.js, Landing Pages, Analytics",
-    image: `${basePath}images/express.webp`,
+    image: `${basePath}images/bare_brilliant.png`,
     link: "#",
   },
   {
@@ -73,7 +75,7 @@ const projects = [
     title: "Performance Optimization",
     category: "Fast Front-End Workflows",
     tools: "Lighthouse, Load Time Optimizations, Cross-Browser Support",
-    image: `${basePath}images/orrdr.png`,
+    image: `${basePath}images/lighthouse.png`,
     link: "#",
   },
 ];

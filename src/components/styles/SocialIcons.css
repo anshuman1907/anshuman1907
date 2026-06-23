@@ -45,33 +45,169 @@
   transition: transform 0.3s ease-out;
 }
 .resume-button {
+  --resume-transform: none;
   position: absolute;
   z-index: 99;
   display: flex;
-  gap: 5px;
-  bottom: 40px;
-  right: 0;
+  align-items: center;
+  flex-direction: column-reverse;
+  gap: 8px;
+  bottom: 72px;
+  right: -8px;
   width: auto;
-  text-wrap: nowrap;
-  letter-spacing: 4px;
-  font-size: 15px;
-  line-height: 15px;
-  font-weight: 600;
-  color: #5e5e5e;
+  overflow: hidden;
+  padding: 12px 8px 10px;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0;
+  font-size: 14px;
+  line-height: 1.05;
+  font-weight: 700;
+  color: #f1fffc;
+  border: 1px solid rgba(94, 234, 212, 0.68);
+  border-radius: 8px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(94, 234, 212, 0.28),
+      rgba(105, 148, 255, 0.17) 52%,
+      rgba(255, 255, 255, 0.08)
+    ),
+    rgba(8, 13, 24, 0.86);
+  background-size: 190% 190%, auto;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 26px rgba(94, 234, 212, 0.24),
+    0 12px 32px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
   cursor: pointer;
-  transition: 0.5s;
+  isolation: isolate;
+  text-shadow: 0 0 14px rgba(94, 234, 212, 0.45);
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background-color 0.35s ease,
+    transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
   transform-origin: left bottom;
-  transform: translateX(100%) rotateZ(-90deg);
+  transform: var(--resume-transform);
+  animation:
+    resumeGlow 3.1s ease-in-out infinite,
+    resumeGradientShift 6s ease-in-out infinite;
 }
+
+.resume-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    transparent 38%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 62%,
+    transparent 100%
+  );
+  transform: translateX(-140%);
+  animation: resumeSheen 4.8s ease-in-out infinite;
+}
+
+.resume-button::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 4px;
+  z-index: 1;
+  width: 3px;
+  height: 30px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    var(--accentColor),
+    transparent
+  );
+  box-shadow:
+    0 0 10px rgba(94, 234, 212, 0.75),
+    0 0 22px rgba(105, 148, 255, 0.32);
+  opacity: 0.95;
+  pointer-events: none;
+  animation: resumeRailMobile 2.15s ease-in-out infinite;
+}
+
 .resume-button:hover {
-  color: #fff;
+  color: #ffffff;
+  border-color: rgba(94, 234, 212, 1);
+  background-color: rgba(94, 234, 212, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 24px rgba(94, 234, 212, 0.48),
+    0 0 42px rgba(105, 148, 255, 0.26),
+    0 16px 34px rgba(0, 0, 0, 0.3);
+  transform: var(--resume-transform) translateY(-5px) scale(1.03);
+  animation-play-state: paused;
 }
-div.resume-button span {
-  color: #fff;
-  font-size: 17px;
-  margin-top: -1px;
+
+.resume-button:hover::before {
+  animation-duration: 1.1s;
+}
+
+.resume-button:hover::after {
+  opacity: 1;
+  animation-duration: 0.95s;
+}
+
+.resume-button .hover-link {
+  z-index: 2;
+}
+
+.resume-button:hover .hover-in {
+  color: #ffffff;
+  transform: translateY(-100%);
+}
+
+.resume-button > span {
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  color: var(--accentColor);
+  font-size: 17px;
+  margin-top: 0;
+  border-radius: 50%;
+  background: rgba(94, 234, 212, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(94, 234, 212, 0.38);
+  z-index: 2;
+  transition:
+    color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+  animation: resumeIconPulse 2.4s ease-in-out infinite;
+}
+
+.resume-button > span svg {
+  transition: transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.resume-button:hover > span {
+  color: #061014;
+  background: var(--accentColor);
+  box-shadow:
+    0 0 16px rgba(94, 234, 212, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  transform: translateX(3px) rotate(8deg);
+  animation-play-state: paused;
+}
+
+.resume-button:hover > span svg {
+  transform: translateY(-1px) scale(1.08);
 }
 .check-line {
   position: fixed;
@@ -93,12 +229,123 @@ div.resume-button span {
 }
 @media only screen and (min-width: 768px) {
   .resume-button {
+    --resume-transform: none;
+    flex-direction: row;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    bottom: 34px;
+    right: 0;
+    padding: 10px 12px 10px 16px;
     transform: none;
     font-size: 20px;
     line-height: 20px;
   }
-  div.resume-button span {
+
+  .resume-button::after {
+    top: auto;
+    right: auto;
+    bottom: 5px;
+    left: 14px;
+    width: 44px;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.9),
+      var(--accentColor),
+      transparent
+    );
+    animation-name: resumeRailDesktop;
+  }
+
+  .resume-button > span {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
     font-size: 23px;
-    margin-top: -1.5px;
+  }
+}
+
+@keyframes resumeGlow {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 0 24px rgba(94, 234, 212, 0.2),
+      0 12px 32px rgba(0, 0, 0, 0.22);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+      0 0 38px rgba(94, 234, 212, 0.34),
+      0 12px 32px rgba(0, 0, 0, 0.22);
+  }
+}
+
+@keyframes resumeGradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%, center;
+  }
+  50% {
+    background-position: 100% 50%, center;
+  }
+}
+
+@keyframes resumeSheen {
+  0%,
+  42% {
+    transform: translateX(-140%);
+  }
+  64%,
+  100% {
+    transform: translateX(140%);
+  }
+}
+
+@keyframes resumeRailMobile {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(70px);
+    opacity: 1;
+  }
+}
+
+@keyframes resumeRailDesktop {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateX(58px);
+    opacity: 1;
+  }
+}
+
+@keyframes resumeIconPulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(94, 234, 212, 0.38),
+      0 0 0 rgba(94, 234, 212, 0);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px rgba(94, 234, 212, 0.52),
+      0 0 16px rgba(94, 234, 212, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-button,
+  .resume-button::before,
+  .resume-button::after,
+  .resume-button > span {
+    animation: none;
   }
 }
